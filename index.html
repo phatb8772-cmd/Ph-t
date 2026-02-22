@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hệ Thống CLB - Professional Edition</title>
+
+<style>
+/* ===== SCHEDULE DARK GLASS STYLE ===== */
+/* ===== SCHEDULE DARK GLASS FINAL ===== */
+.schedule{
+width:90%;
+margin:60px auto;
+padding:35px;
+border-radius:25px;
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(15px);
+box-shadow:0 25px 60px rgba(0,0,0,0.6);
+color:#fff;
+transition:0.4s;
+}
+
+.schedule h2{
+text-align:center;
+color:#ffd700;
+margin-bottom:15px;
+}
+
+.schedule p{
+opacity:0.85;
+}
+
+.schedule table{
+width:100%;
+border-collapse:collapse;
+margin-top:25px;
+overflow:hidden;
+border-radius:15px;
+}
+
+.schedule th{
+background:linear-gradient(45deg,#ff8c00,#a020f0);
+color:white;
+padding:12px;
+font-size:15px;
+}
+
+.schedule td{
+padding:12px;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.schedule tr{
+transition:0.3s;
+}
+
+.schedule tr:hover{
+background:rgba(255,255,255,0.08);
+transform:scale(1.01);
+}
+
+/* Làm chữ "Tôn chỉ:" to bằng Tiêu chí */
+.mission b{
+    font-size:20px;  /* bằng gần h3 */
+    color:#ffd700;
+    font-weight:700;
+    position:relative;
+    display:inline-block;
+    padding-bottom:5px;
+}
+
+.mission b::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:100%;
+    height:2px;
+    background:linear-gradient(90deg,#ffd700,#00ffcc);
+}
+/* Chỉ làm nổi bật đúng chữ "Tôn chỉ:" */
+.mission b{
+    color:#ffd700;
+    position:relative;
+    font-weight:600;
+    padding-bottom:3px;
+}
+
+.mission b::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:100%;
+    height:2px;
+    background:linear-gradient(90deg,#ffd700,#00ffcc);
+}
+nav a.active{
+background:linear-gradient(45deg,#ff8c00,#a020f0);
+color:white;
+box-shadow:0 0 20px #ff8c00;
+}
+/* CLB sáng khi xuất hiện */
+.club{
+opacity:0.4;
+transform:translateY(40px);
+transition:all 0.6s ease;
+}
+
+.club.show{
+opacity:1;
+transform:translateY(0);
+box-shadow:0 0 35px rgba(255,215,0,0.6);
+}
+/* NÚT ĐĂNG KÝ */
+.register-btn{
+margin-top:20px;
+padding:12px 22px;
+border:none;
+border-radius:30px;
+font-weight:bold;
+cursor:pointer;
+background:linear-gradient(45deg,#ff8c00,#a020f0);
+color:white;
+transition:0.3s;
+box-shadow:0 0 15px rgba(0,0,0,0.5);
+}
+
+.register-btn:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px #ff8c00;
+}
+
+/* FORM POPUP */
+.form-overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:2000;
+}
+
+.form-box{
+background:white;
+color:#333;
+padding:30px;
+border-radius:20px;
+width:350px;
+animation:fadeIn 0.3s ease;
+}
+
+.form-box h3{
+margin-top:0;
+text-align:center;
+color:#6a11cb;
+}
+
+.form-box input, .form-box select{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+.form-box button{
+width:100%;
+padding:10px;
+border:none;
+border-radius:20px;
+background:linear-gradient(45deg,#ff8c00,#a020f0);
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+}
+
+.close-btn{
+background:#ccc !important;
+color:black !important;
+}
+
+@keyframes fadeIn{
+from{transform:scale(0.8);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+
+.register-btn:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px #ff8c00;
+}
+
+}
+nav{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+display:flex;
+justify-content:center;
+gap:30px;
+padding:18px 0;
+background:rgba(15,15,30,0.7);
+backdrop-filter:blur(15px);
+box-shadow:0 8px 30px rgba(0,0,0,0.7);
+z-index:1000;
+transition:0.3s;
+}
+
+nav a{
+color:#fff;
+text-decoration:none;
+font-weight:600;
+font-size:16px;
+padding:8px 18px;
+border-radius:30px;
+transition:0.3s;
+}
+
+nav a:hover{
+background:linear-gradient(45deg,#ff8c00,#a020f0);
+color:white;
+box-shadow:0 0 15px #ff8c00;
+}
+
+nav a.active{
+background:linear-gradient(45deg,#ff8c00,#a020f0);
+box-shadow:0 0 20px #a020f0;
+}
+html{scroll-behavior:smooth;}
+*{box-sizing:border-box;}
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#1f1c2c,#928dab);
+color:#fff;
+}
+
+/* MENU */
+nav{
+background:#000;
+padding:15px;
+text-align:center;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+nav a{
+color:#ffd700;
+margin:0 10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+nav a:hover{
+color:#00ffcc;
+}
+
+/* HEADER */
+header{
+text-align:center;
+padding:70px 20px;
+background:linear-gradient(90deg,#000000,#434343);
+}
+
+header h1{
+margin:0;
+font-size:32px;
+}
+
+/* CLUB */
+.club{
+width:90%;
+margin:60px auto;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(10px);
+border-radius:25px;
+padding:30px;
+box-shadow:0 20px 50px rgba(0,0,0,0.5);
+transition:0.4s;
+}
+
+.club:hover{
+transform:translateY(-10px);
+}
+
+.club h2{
+color:#ffd700;
+}
+
+.mission{
+font-style:italic;
+}
+
+.criteria{
+list-style:none;
+padding-left:0;
+}
+
+.criteria li{
+padding-left:20px;
+position:relative;
+margin:6px 0;
+}
+
+.criteria li::before{
+content:"—";
+position:absolute;
+left:0;
+color:#ffd700;
+}
+
+.timeline{
+border-left:3px solid #ffd700;
+padding-left:20px;
+margin-top:10px;
+}
+
+.time{
+font-weight:bold;
+color:#00ffcc;
+}
+
+.club img{
+width:100%;
+height:280px;
+object-fit:cover;
+border-radius:15px;
+margin-top:15px;
+}
+
+/* SCHEDULE */
+
+
+
+</style>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hệ Thống CLB - Professional Edition</title>
+
+<style>
+nav a.active{
+color:#00ffcc;
+border-bottom:2px solid #00ffcc;
+padding-bottom:5px;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hệ Thống CLB - Professional Edition</title>
+
+<style>
+html{scroll-behavior:smooth;}
+*{box-sizing:border-box;}
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#1f1c2c,#928dab);
+color:#fff;
+}
+
+/* MENU */
+nav{
+background:#000;
+padding:15px;
+text-align:center;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+nav a{
+color:#ffd700;
+margin:0 10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+nav a:hover{
+color:#00ffcc;
+}
+
+/* HEADER */
+header{
+text-align:center;
+padding:70px 20px;
+background:linear-gradient(90deg,#000000,#434343);
+}
+
+header h1{
+margin:0;
+font-size:32px;
+}
+
+/* CLUB */
+.club{
+width:90%;
+margin:60px auto;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(10px);
+border-radius:25px;
+padding:30px;
+box-shadow:0 20px 50px rgba(0,0,0,0.5);
+transition:0.4s;
+}
+
+.club:hover{
+transform:translateY(-10px);
+}
+
+.club h2{
+color:#ffd700;
+}
+
+.mission{
+font-style:italic;
+}
+
+.criteria{
+list-style:none;
+padding-left:0;
+}
+
+.criteria li{
+padding-left:20px;
+position:relative;
+margin:6px 0;
+}
+
+.criteria li::before{
+content:"—";
+position:absolute;
+left:0;
+color:#ffd700;
+}
+
+.timeline{
+border-left:3px solid #ffd700;
+padding-left:20px;
+margin-top:10px;
+}
+
+.time{
+font-weight:bold;
+color:#00ffcc;
+}
+
+.club img{
+width:100%;
+height:280px;
+object-fit:cover;
+border-radius:15px;
+margin-top:15px;
+}
+
+/* SCHEDULE */
+.schedule{
+background:white;
+color:#333;
+width:90%;
+margin:40px auto;
+border-radius:20px;
+padding:30px;
+}
+
+.schedule table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+.schedule th,.schedule td{
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+}
+
+.schedule th{
+background:#6a11cb;
+color:white;
+}
+
+footer{
+text-align:center;
+padding:40px;
+background:#000;
+margin-top:60px;
+}
+.club{
+transition:all 0.4s ease, transform 0.4s ease;
+}
+
+.club:hover{
+transform:translateY(-15px) scale(1.02);
+box-shadow:0 30px 70px rgba(0,0,0,0.6);
+}
+header h1{
+text-shadow:0 0 10px rgba(255,215,0,0.8),
+            0 0 20px rgba(255,215,0,0.6),
+            0 0 30px rgba(255,215,0,0.4);
+}
+/* NỀN CHUYỂN ĐỘNG */
+body{
+background:linear-gradient(-45deg,#1f1c2c,#928dab,#6a11cb,#2575fc);
+background-size:400% 400%;
+animation:gradientMove 12s ease infinite;
+}
+
+@keyframes gradientMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+.timeline{
+border-left:3px solid #ffd700;
+padding-left:25px;
+margin-bottom:20px;
+position:relative;
+}
+
+.event::before{
+content:"";
+position:absolute;
+left:-10px;
+width:15px;
+height:15px;
+background:#00ffcc;
+border-radius:50%;
+}
+.club img:hover{
+transform:scale(1.05);
+box-shadow:0 0 25px rgba(255,215,0,0.8);
+}
+
+html{scroll-behavior:smooth;}
+*{box-sizing:border-box;}
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#1f1c2c,#928dab);
+color:#fff;
+}
+
+/* HEADER */
+header{
+text-align:center;
+padding:70px 20px;
+background:linear-gradient(90deg,#000000,#434343);
+}
+
+header h1{
+margin:0;
+font-size:40px;
+letter-spacing:3px;
+}
+
+header p{
+opacity:0.8;
+margin-top:10px;
+}
+
+/* SCHEDULE giữ nguyên */
+.schedule{
+background:white;
+color:#333;
+width:90%;
+margin:40px auto;
+border-radius:20px;
+padding:30px;
+box-shadow:0 15px 40px rgba(0,0,0,0.4);
+}
+
+.schedule h2{
+text-align:center;
+color:#6a11cb;
+}
+
+.schedule table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+.schedule th,.schedule td{
+border:1px solid #ddd;
+padding:10px;
+text-align:center;
+}
+
+.schedule th{
+background:#6a11cb;
+color:white;
+}
+
+/* CLUB SECTION */
+.club{
+width:90%;
+margin:60px auto;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(10px);
+border-radius:25px;
+padding:30px;
+box-shadow:0 20px 50px rgba(0,0,0,0.5);
+transition:0.5s;
+}
+
+.club:hover{
+transform:translateY(-10px);
+}
+
+.club h2{
+color:#ffd700;
+margin-top:0;
+}
+
+.mission{
+font-style:italic;
+margin-bottom:15px;
+}
+
+/* TIÊU CHÍ */
+.criteria{
+list-style:none;
+padding-left:0;
+margin-bottom:20px;
+}
+
+.criteria li{
+margin:8px 0;
+padding-left:20px;
+position:relative;
+}
+
+.criteria li::before{
+content:"—";
+position:absolute;
+left:0;
+color:#ffd700;
+font-weight:bold;
+}
+
+/* TIMELINE HOẠT ĐỘNG */
+.timeline{
+border-left:3px solid #ffd700;
+padding-left:20px;
+margin-bottom:20px;
+}
+
+.event{
+margin-bottom:20px;
+}
+
+.time{
+font-weight:bold;
+color:#00ffcc;
+}
+
+.activity{
+margin-top:5px;
+}
+
+/* IMAGE */
+.club img{
+width:100%;
+height:280px;
+object-fit:cover;
+border-radius:15px;
+margin-top:15px;
+transition:0.4s;
+}
+
+.club img:hover{
+transform:scale(1.05);
+}
+
+/* FOOTER */
+footer{
+text-align:center;
+padding:40px;
+background:#000;
+margin-top:60px;
+}
+/* NÂNG CẤP TIÊU ĐỀ H3 */
+.club h3{
+margin-top:25px;
+color:#ffd700;
+position:relative;
+display:inline-block;
+padding-bottom:5px;
+}
+
+.club h3::after{
+content:"";
+position:absolute;
+left:0;
+bottom:0;
+width:100%;
+height:2px;
+background:linear-gradient(90deg,#ffd700,#00ffcc);
+}
+
+</style>
+</head>
+
+<body>
+    
+<nav>
+<a href="#stem">STEM</a>
+<a href="#vanhoadoc">Văn hóa đọc</a>
+<a href="#songxanh">Sống xanh</a>
+<a href="#phapluat">Pháp luật</a>
+<a href="#vannghe">Văn nghệ</a>
+<a href="#tienganh">Tiếng Anh</a>
+<a href="#thethao">Thể thao</a>
+<a href="#lichsinhhoat">Lịch sinh hoạt</a>
+</nav>
+
+
+<header>
+<h1>Hệ thống 7 câu lạc bộ của Trường Trung Học Phổ Thông Võ Nguyên Giáp</h1>
+<p>Đam mê – Sáng tạo – Bản lĩnh-Kiên cường - Cần cù </p>
+</header>
+
+<!-- LỊCH SINH HOẠT GIỮ NGUYÊN -->
+
+
+<!-- CLB STEM -->
+<div class="club" id="stem">
+<h2>1. CLB STEM</h2>
+
+<p class="mission"><b>Tôn chi:</b> Khơi nguồn sáng tạo khoa học và ứng dụng công nghệ vào thực tiễn.</p>
+
+<h3>Tiêu chí</h3>
+<ul class="criteria">
+<li>Tư duy logic và phân tích</li>
+<li>Đam mê nghiên cứu sáng tạo</li>
+<li>Kiên trì thử nghiệm</li>
+<li>Làm việc nhóm hiệu quả</li>
+<li>Chủ động tìm tòi giải pháp mới</li>
+<li>Có trách nhiệm với sản phẩm chung</li>
+</ul>
+
+<h3>Lịch Hoạt động </h3>
+<div class="timeline">
+<div class="event">
+<div class="time">14:00 – 16:00</div>
+<div class="activity">Thiết kế mô hình và chế tạo sản phẩm STEM</div>
+</div>
+<div class="event">
+<div class="time">16:00 – 17:00</div>
+<div class="activity">Lập trình, thử nghiệm và đánh giá sản phẩm</div>
+</div>
+</div>
+
+<a href="https://ibb.co/Xfvyh5zf"><img src="https://i.ibb.co/GfbsKMVf/IMG-1771434493322-1771434588527.jpg" alt="IMG-1771434493322-1771434588527" border="0"></a>
+<button class="register-btn" onclick="openForm('CLB STEM')">
+Đăng ký tham gia
+</button>
+</button>
+</div>
+<div class="club" id="vanhoadoc">
+<h2>2. CLB Văn hóa đọc</h2>
+
+<p class="mission"><b>Tôn chỉ:</b> Lan tỏa tri thức và xây dựng thói quen đọc sách.</p>
+
+<h3>Tiêu chí</h3>
+<ul class="criteria">
+<li>Yêu thích đọc sách</li>
+<li>Khả năng cảm nhận nội dung</li>
+<li>Kỹ năng trình bày suy nghĩ</li>
+<li>Tôn trọng quan điểm người khác</li>
+<li>Chăm chỉ và có tinh thần học hỏi</li>
+<li>Tham gia thảo luận tích cực</li>
+</ul>
+
+<h3>Lịch Hoạt động </h3>
+<div class="timeline">
+<div class="event">
+<div class="time">14:00 – 16:00</div>
+<div class="activity">Giới thiệu và phân tích sách theo chủ đề</div>
+</div>
+<div class="event">
+<div class="time">16:00 – 17:00</div>
+<div class="activity">Thảo luận nhóm và chia sẻ cảm nhận</div>
+</div>
+</div>
+
+<img  src="https://i.postimg.cc/52HzbJs1/z7526125270985-5337b9a4187998a615f2632e7ef2a175.jpg">
+<button class="register-btn" onclick="registerClub('CLB Văn hóa đọc')">
+Đăng ký tham gia
+</button>
+</div>
+<div class="club" id="songxanh">
+<h2>3. CLB Sống xanh</h2>
+
+<p class="mission"><b>Tôn chỉ:</b> Hành động vì môi trường xanh – sạch – đẹp.</p>
+
+<h3>Tiêu chí</h3>
+<ul class="criteria">
+<li>Yêu thiên nhiên</li>
+<li>Có ý thức bảo vệ môi trường</li>
+<li>Sẵn sàng tham gia hoạt động ngoài trời</li>
+<li>Tinh thần trách nhiệm cộng đồng</li>
+<li>Chủ động đề xuất sáng kiến xanh</li>
+<li>Làm việc nhóm tích cực</li>
+</ul>
+
+<h3>Lịch Hoạt động </h3>
+<div class="timeline">
+<div class="event">
+<div class="time">14:00 – 16:00</div>
+<div class="activity">Phân loại rác và tái chế</div>
+</div>
+<div class="event">
+<div class="time">16:00 – 17:00</div>
+<div class="activity">Trồng cây và chăm sóc khuôn viên</div>
+</div>
+</div>
+
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/GQ2L7tFM/songxanh2.jpg" alt="songxanh2" border="0"></a>
+<button class="register-btn" onclick="registerClub('CLB Sống xanh')">
+Đăng ký tham gia
+</button>
+</div>
+<div class="club" id="phapluat">
+<h2>4. CLB Pháp luật</h2>
+
+<p class="mission"><b>Tôn chỉ:</b> Nâng cao hiểu biết pháp luật học đường.</p>
+
+<h3>Tiêu chí</h3>
+<ul class="criteria">
+<li>Tư duy phản biện rõ ràng</li>
+<li>Kỹ năng tranh luận</li>
+<li>Tôn trọng nội quy</li>
+<li>Quan tâm vấn đề xã hội</li>
+<li>Khả năng phân tích tình huống</li>
+<li>Tinh thần công bằng</li>
+</ul>
+
+<h3>Lịch Hoạt động </h3>
+<div class="timeline">
+<div class="event">
+<div class="time">14:00 – 16:00</div>
+<div class="activity">Tìm hiểu luật học đường và tình huống thực tế</div>
+</div>
+<div class="event">
+<div class="time">16:00 – 17:00</div>
+<div class="activity">Phiên tòa giả định và tranh luận</div>
+</div>
+</div>
+
+<a href="https://ibb.co/JFgXVQC2"><img src="https://i.ibb.co/h1wpbfCH/IMG-1771685159612-1771685209124.jpg" alt="IMG-1771685159612-1771685209124" border="0"></a>
+<button class="register-btn" onclick="registerClub('CLB Pháp luật')">
+Đăng ký tham gia
+</button>
+</div>
+<div class="club" id="vannghe">
+<h2>5. CLB Văn nghệ</h2>
+
+<p class="mission"><b>Tôn chỉ:</b> Phát triển tài năng nghệ thuật và sự tự tin.</p>
+
+<h3>Tiêu chí</h3>
+<ul class="criteria">
+<li>Đam mê ca hát hoặc biểu diễn</li>
+<li>Tự tin trước đám đông</li>
+<li>Sáng tạo trong dàn dựng</li>
+<li>Kỹ năng làm việc nhóm</li>
+<li>Tinh thần trách nhiệm</li>
+<li>Chăm chỉ luyện tập</li>
+</ul>
+
+<h3>Lịch Hoạt động </h3>
+<div class="timeline">
+<div class="event">
+<div class="time">14:00 – 16:00</div>
+<div class="activity">Luyện thanh và tập kỹ thuật</div>
+</div>
+<div class="event">
+<div class="time">16:00 – 17:00</div>
+<div class="activity">Dàn dựng và tổng duyệt tiết mục</div>
+</div>
+</div>
+
+<a href="https://ibb.co/4g1KBtnd"><img src="https://i.ibb.co/k6m5YBs1/IMG-20260218-164701.jpg" alt="IMG-20260218-164701" border="0"></a>
+<button class="register-btn" onclick="registerClub('CLB Văn nghệ')">
+Đăng ký tham gia
+</button>
+</div>
+<div class="club" id="tienganh">
+<h2>6. CLB Tiếng Anh</h2>
+
+<p class="mission"><b>Tôn chỉ:</b> Phát triển kỹ năng giao tiếp và hội nhập quốc tế.</p>
+
+<h3>Tiêu chí</h3>
+<ul class="criteria">
+<li>Tự tin giao tiếp</li>
+<li>Ham học hỏi</li>
+<li>Chủ động tham gia thảo luận</li>
+<li>Khả năng phát âm rõ ràng</li>
+<li>Tinh thần hợp tác</li>
+<li>Sẵn sàng thử thách bản thân</li>
+</ul>
+
+<h3>Lịch Hoạt động </h3>
+<div class="timeline">
+<div class="event">
+<div class="time">14:00 – 16:00</div>
+<div class="activity">Speaking theo chủ đề thực tế</div>
+</div>
+<div class="event">
+<div class="time">16:00 – 17:00</div>
+<div class="activity">Debate và trò chơi tiếng Anh</div>
+</div>
+</div>
+
+<img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644">
+<button class="register-btn" onclick="registerClub('CLB Tiếng anh')">
+Đăng ký tham gia
+</button>
+</div>
+<div class="club" id="thethao">
+<h2>7. CLB Thể dục thể thao</h2>
+
+<p class="mission"><b>Tôn chỉ:</b> Rèn luyện thể lực và tinh thần đồng đội.</p>
+
+<h3>Tiêu chí</h3>
+<ul class="criteria">
+<li>Kỷ luật và đúng giờ</li>
+<li>Thể lực tốt</li>
+<li>Tinh thần fair-play</li>
+<li>Ý chí bền bỉ</li>
+<li>Hợp tác cùng đồng đội</li>
+<li>Tuân thủ quy định an toàn</li>
+</ul>
+
+<h3>Lịch Hoạt động </h3>
+<div class="timeline">
+<div class="event">
+<div class="time">14:00 – 16:00</div>
+<div class="activity">Khởi động và luyện kỹ thuật</div>
+</div>
+<div class="event">
+<div class="time">16:00 – 17:00</div>
+<div class="activity">Thi đấu giao hữu và rèn thể lực</div>
+</div>
+</div>
+
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/9HrQg8R2/thethao2.jpg" alt="thethao2" border="0"></a>
+<button class="register-btn" onclick="openForm('CLB Thể dục thể thao')">
+Đăng ký tham gia
+</button>
+
+</div>
+<div class="schedule" id="lichsinhhoat">
+<h2>LỊCH SINH HOẠT TẬP TRUNG CÁC CÂU LẠC BỘ</h2>
+<p><b>Áp dụng từ ngày:</b> 01/02/2026</p>
+<p><b>Thời gian:</b> 14:00 Thứ Tư hằng tuần</p>
+<p><b>Địa điểm:</b> Trường THPT Võ Nguyên Giáp</p>
+
+<table>
+<tr>
+<th>STT</th>
+<th>Tuần</th>
+<th>Câu lạc bộ</th>
+<th>Người phụ trách</th>
+</tr>
+<tr><td>1</td><td>1</td><td>CLB STEM</td><td>Phan Thị Diệp</td></tr>
+<tr><td>2</td><td>1</td><td>CLB Văn hóa đọc</td><td>Vũ Thị Lan Hương</td></tr>
+<tr><td>3</td><td>2</td><td>CLB Sống xanh</td><td>Nguyễn Thị Thúy Hằng</td></tr>
+<tr><td>4</td><td>2</td><td>CLB Pháp luật</td><td>Phạm Thị Tám</td></tr>
+<tr><td>5</td><td>3</td><td>CLB Văn nghệ</td><td>Nguyễn Thị Ly</td></tr>
+<tr><td>6</td><td>4</td><td>CLB Tiếng Anh</td><td>Nguyễn Thanh Nhã</td></tr>
+<tr><td>7</td><td>4</td><td>CLB Thể dục thể thao</td><td>Đỗ Tấn Khương</td></tr>
+</table>
+</div>
+
+<!-- Bạn có thể nhân bản cấu trúc trên cho 6 CLB còn lại -->
+
+<footer>
+<p>© 2026 - Hệ Thống Câu Lạc Bộ | Professional Edition</p>
+</footer>
+<script>
+document.querySelectorAll(".club h2").forEach((title,index)=>{
+title.innerHTML = "CLB #" + (index+1) + " - " + title.innerText.split(". ")[1];
+});
+</script>
+<button id="topBtn" style="
+position:fixed;
+bottom:30px;
+right:30px;
+background:#ffd700;
+border:none;
+padding:10px 15px;
+border-radius:50%;
+font-size:18px;
+cursor:pointer;
+display:none;">↑</button>
+
+<script>
+const topBtn=document.getElementById("topBtn");
+
+window.addEventListener("scroll",()=>{
+if(window.scrollY>300){
+topBtn.style.display="block";
+}else{
+topBtn.style.display="none";
+}
+});
+
+topBtn.onclick=()=>{
+window.scrollTo({top:0,behavior:"smooth"});
+};
+</script>
+<script>
+window.addEventListener("scroll",function(){
+let nav=document.querySelector("nav");
+if(window.scrollY>50){
+nav.style.padding="8px 0";
+}else{
+nav.style.padding="15px 0";
+}
+});
+</script>
+<div class="form-overlay" id="registerForm">
+<div class="form-box">
+<h3>Đăng ký tham gia</h3>
+
+<input type="text" id="clubName" readonly>
+
+<input type="text" placeholder="Họ và tên" required>
+<input type="text" placeholder="Lớp" required>
+<input type="text" placeholder="Số điện thoại" required>
+
+<button onclick="submitForm()">Xác nhận đăng ký</button>
+<button class="close-btn" onclick="closeForm()">Hủy</button>
+
+</div>
+</div>
+</script>
+<script>
+function openForm(club){
+document.getElementById("registerForm").style.display="flex";
+document.getElementById("clubName").value = club;
+}
+
+function closeForm(){
+document.getElementById("registerForm").style.display="none";
+}
+
+function submitForm(){
+alert("🎉 Đăng ký thành công!");
+closeForm();
+}
+</script>
+<script>
+const clubs = document.querySelectorAll(".club");
+
+function revealOnScroll(){
+const triggerBottom = window.innerHeight * 0.85;
+
+clubs.forEach(club=>{
+const clubTop = club.getBoundingClientRect().top;
+
+if(clubTop < triggerBottom){
+club.classList.add("show");
+}
+});
+}
+
+window.addEventListener("scroll", revealOnScroll);
+window.addEventListener("load", revealOnScroll);
+</script>
+<script>
+const sections = document.querySelectorAll(".club");
+const navLinks = document.querySelectorAll("nav a");
+
+window.addEventListener("scroll", () => {
+let current = "";
+
+sections.forEach(section => {
+const sectionTop = section.offsetTop - 150;
+if(pageYOffset >= sectionTop){
+current = section.getAttribute("id");
+}
+});
+
+navLinks.forEach(link => {
+link.classList.remove("active");
+if(link.getAttribute("href") === "#" + current){
+link.classList.add("active");
+}
+});
+});
+</script>
+</body>
+</html>
